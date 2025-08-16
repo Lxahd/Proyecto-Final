@@ -46,8 +46,52 @@ int registrar_empleado(EMPLEADO empleado[], int num_empleado){
     return num_empleado + cantidad;
 }
 
+int cargar_archivo_empleados(const char *archivoEmpleados, EMPLEADO empleado[]){
+    FILE *archivo = fopen(archivoEmpleados, "r");
+    if(!archivo){
+        cout << "Error al abrir el archivo de empleados." << endl;
+        return 0;
+    }
+
+    int n = 0;
+    char buffer[256];
+
+    if (fgets(buffer, sizeof(buffer), archivo)) {
+    }
+
+    while (fgets(buffer, sizeof(buffer), archivo)) {
+        buffer[strcspn(buffer, "\n")] = 0;
+        sscanf(buffer, "%s %s %s %s",
+            empleado[n].nombre,
+            empleado[n].direccion,
+            empleado[n].telefono,
+            empleado[n].email
+        );
+        n++;
+    }
+    fclose(archivo);
+    return n;
+}
+
 void guardar_archivo_empleados(const char *archivoEmpleados, EMPLEADO empleado[], int num_empleado){
-    
+    CreateDirectoryA("datos", NULL);
+
+    FILE *archivo = fopen(archivoEmpleados, "w");
+    if(!archivo){
+        cout << "Error al abrir el archivo para guardar empleados." << endl;
+        return;
+    }
+
+    fprintf(archivo, "Numero de empleados: %d\n", num_empleado);
+    for (int i = 0; i < num_empleado; i++)
+    {
+        fprintf(archivo, "%s %s %s %s\n",
+                empleado[i].nombre,
+                empleado[i].direccion,
+                empleado[i].telefono,
+                empleado[i].email);
+    }
+    fclose(archivo);
 }
 
 int menuPrincipal(){
@@ -66,23 +110,30 @@ int menuPrincipal(){
     return resp;
 }
 
-main(){
+int main(){
     int option, n_empleado;
-    char archivos = ARCHIVO_EMPLEADOS;
+    const char* archivoEmpleado = ARCHIVO_EMPLEADOS;
     EMPLEADO grupo[MAX_EMPLEADOS];
 
-    n_empleado = 0;
-    option = menuPrincipal();
-    switch (option)
-    {
-        case 1: system("CLS");
-                cout << "1. Registrar Empleado";
-                registrar_empleado(grupo, n_empleado);
-                guardar_archivo_empleados(archivos, grupo, n_empleado);
-            break;
-        case 4: exit(0);
-            break;
-        default:
-            break;
+    n_empleado = cargar_archivo_empleados(archivoEmpleado, grupo);
+    for (;;){
+        system("CLS");
+        option = menuPrincipal();
+
+        switch(option)
+        {
+            case 1: system("CLS");
+                    cout << "1. Registrar Empleado";
+                    n_empleado = registrar_empleado(grupo, n_empleado);
+                    guardar_archivo_empleados(archivoEmpleado, grupo, n_empleado);
+                    break;
+            
+            case 4: cout << "Saliendo del sistema..." << endl;
+                    Sleep(1000);
+                    exit(0);
+                    break;
+            default:
+                break;
+        }
     }
 }
