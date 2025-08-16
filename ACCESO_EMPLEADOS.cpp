@@ -3,6 +3,7 @@
 #include <windows.h>
 #include <fstream>
 
+#define MAX_EMPLEADOS 300
 #define MAX_NOMBRE 60
 #define MAX_DIRECCION 100
 #define MAX_TELEFONO 9
@@ -22,6 +23,30 @@ struct EMPLEADO{
     float horas_trabajadas;
 };
 
+int registrar_empleado(EMPLEADO empleado[], int num_empleados){
+    
+    int i, cantidad;
+
+    cout << "Ingrese el numero de empleados a agregar: ";
+    cin >> cantidad;
+
+    for (i = 0; i < cantidad; i++)
+    {
+        cout << "Ingresar datos de ";
+        cout << "[EMPLEADO " << num_empleados + i + 1 << "]\n";
+        cout << "Nombre: ";
+        cin >> empleado[num_empleados + i].nombre;
+        cout << "Direccion: ";
+        cin >> empleado[num_empleados + i].direccion;
+        cout << "Telefono: ";
+        cin >> empleado[num_empleados + i].telefono;
+        cout << "Email: ";
+        cin >> empleado[num_empleados + i].email;
+        cout << endl;
+    }
+    return num_empleados + cantidad;
+}
+
 int menuPrincipal(){
     int resp;
     cout << "=======================================\n" <<
@@ -39,11 +64,16 @@ int menuPrincipal(){
 }
 
 main(){
-    int option;
+    int option, n_empleado;
+    EMPLEADO grupo[MAX_EMPLEADOS];
+
+    n_empleado = 0;
     option = menuPrincipal();
     switch (option)
     {
-        case 1:
+        case 1: system("CLS");
+                cout << "1. Registrar Empleado";
+                registrar_empleado(grupo, n_empleado);
             break;
         case 4: exit(0);
             break;
