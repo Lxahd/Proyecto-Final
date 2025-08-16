@@ -9,8 +9,8 @@
 #define MAX_TELEFONO 9
 #define MAX_EMAIL 20
 #define HORA_LIMITE 7.5
-#define ARCHIVO_EMPLEADOS "empleados.txt"
-#define ARCHIVO_HORAS "horas.txt"
+#define ARCHIVO_EMPLEADOS "datos/empleados.txt"
+#define ARCHIVO_HORAS "datos/horas.txt"
 
 using namespace std;
 
@@ -23,28 +23,31 @@ struct EMPLEADO{
     float horas_trabajadas;
 };
 
-int registrar_empleado(EMPLEADO empleado[], int num_empleados){
+int registrar_empleado(EMPLEADO empleado[], int num_empleado){
     
     int i, cantidad;
 
-    cout << "Ingrese el numero de empleados a agregar: ";
+    cout << "\nIngrese el numero de empleados a agregar: ";
     cin >> cantidad;
 
     for (i = 0; i < cantidad; i++)
     {
-        cout << "Ingresar datos de ";
-        cout << "[EMPLEADO " << num_empleados + i + 1 << "]\n";
+        cout << "Ingresar datos de [EMPLEADO " << num_empleado + i + 1 << "]\n";
         cout << "Nombre: ";
-        cin >> empleado[num_empleados + i].nombre;
+        cin >> empleado[num_empleado + i].nombre;
         cout << "Direccion: ";
-        cin >> empleado[num_empleados + i].direccion;
+        cin >> empleado[num_empleado + i].direccion;
         cout << "Telefono: ";
-        cin >> empleado[num_empleados + i].telefono;
+        cin >> empleado[num_empleado + i].telefono;
         cout << "Email: ";
-        cin >> empleado[num_empleados + i].email;
+        cin >> empleado[num_empleado + i].email;
         cout << endl;
     }
-    return num_empleados + cantidad;
+    return num_empleado + cantidad;
+}
+
+void guardar_archivo_empleados(const char *archivoEmpleados, EMPLEADO empleado[], int num_empleado){
+    
 }
 
 int menuPrincipal(){
@@ -65,6 +68,7 @@ int menuPrincipal(){
 
 main(){
     int option, n_empleado;
+    char archivos = ARCHIVO_EMPLEADOS;
     EMPLEADO grupo[MAX_EMPLEADOS];
 
     n_empleado = 0;
@@ -74,6 +78,7 @@ main(){
         case 1: system("CLS");
                 cout << "1. Registrar Empleado";
                 registrar_empleado(grupo, n_empleado);
+                guardar_archivo_empleados(archivos, grupo, n_empleado);
             break;
         case 4: exit(0);
             break;
